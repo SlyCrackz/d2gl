@@ -800,9 +800,17 @@ void HDText::drawEntryText()
 	const auto old_size = m_text_size;
 	setTextSize(18);
 	const auto level_name = d2::getLevelName(*d2::level_no);
+	const std::set<int> exclusions = { 
+		38,	                       // Tristram
+		109,                       // Harrogath
+		121,                       // Nihlathak's Temple
+		66, 67, 68, 69, 70, 71, 72 // Tal Rasha's Tombs
+	};
 	std::wstring entry_text = L"Entering ";
+
+	// Skip adding "The" if it already exists or doesn't make grammatical sense
 	if (wcsncmp(level_name, L"The ", 4) != 0) {
-		if (*d2::level_no != 38 && *d2::level_no != 109 && *d2::level_no != 121) {
+		if (exclusions.find(*d2::level_no) == exclusions.end()) {
 			entry_text += L"The ";
 		}
 	}
