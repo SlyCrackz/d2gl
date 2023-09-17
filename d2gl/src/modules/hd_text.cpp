@@ -800,8 +800,15 @@ void HDText::drawEntryText()
 	const auto old_size = m_text_size;
 	setTextSize(18);
 	const auto level_name = d2::getLevelName(*d2::level_no);
-	const auto text_width = getNormalTextWidth(level_name, 0);
-	drawText(level_name, *d2::screen_width / 2 - text_width / 2, (uint32_t)((float)*d2::screen_height / 4.5f), 17, 0);
+	std::wstring entry_text = L"Entering ";
+	if (wcsncmp(level_name, L"The ", 4) != 0) {
+		if (*d2::level_no != 38 && *d2::level_no != 109 && *d2::level_no != 121) {
+			entry_text += L"The ";
+		}
+	}
+	entry_text += level_name;
+	const auto text_width = getNormalTextWidth(entry_text.c_str(), 0);
+	drawText(entry_text.c_str(), *d2::screen_width / 2 - text_width / 2, (uint32_t)((float)*d2::screen_height / 4.5f), 17, 0);
 	setTextSize(old_size);
 }
 
