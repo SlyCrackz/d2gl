@@ -1,6 +1,7 @@
 #pragma once
-#define YAML_CPP_STATIC_DEFINE
-#include "yaml-cpp/yaml.h"
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::ordered_json;
 
 namespace d2gl {
 class Config {
@@ -9,7 +10,7 @@ public:
 	void LoadConfig();
 
 private:
-	YAML::Node yaml;
+	json jsonConfig;
 
 	int GetInt(std::string sectionKey, std::string key, int def, int min, int max);
 	float GetFloat(std::string sectionKey, std::string key, float def, float min, float max);

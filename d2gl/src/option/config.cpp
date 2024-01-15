@@ -1,18 +1,20 @@
 #pragma once
 #include "pch.h"
 #include "config.h"
-#include "yaml-cpp/yaml.h"
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::ordered_json;
 
 namespace d2gl {
 
 int Config::GetInt(std::string sectionKey, std::string key, int def, int min = INT_MIN, int max = INT_MAX)
 {
 	int val = def;
-	if (yaml[sectionKey][key]) {
+	if (jsonConfig.contains(sectionKey) && jsonConfig[sectionKey].contains(key)) {
 		try {
-			val = yaml[sectionKey][key].as<int>();
+			val = jsonConfig[sectionKey][key].template get<int>();
 		} 
-		catch (const YAML::TypedBadConversion<int>& e) {
+		catch (const std::exception& e) {
 			// Handle conversion error here
 			error_log("Error converting int config key '%s' in section '%s', check your values! Exception: %s", key.c_str(), sectionKey.c_str(), e.what());
 		}
@@ -32,11 +34,11 @@ int Config::GetInt(std::string sectionKey, std::string key, int def, int min = I
 float Config::GetFloat(std::string sectionKey, std::string key, float def, float min, float max)
 {
 	float val = def;
-	if (yaml[sectionKey][key]) {
+	if (jsonConfig.contains(sectionKey) && jsonConfig[sectionKey].contains(key)) {
 		try {
-			val = yaml[sectionKey][key].as<float>();
+			val = jsonConfig[sectionKey][key].template get<float>();
 		} 
-		catch (const YAML::TypedBadConversion<float>& e) {
+		catch (const std::exception& e) {
 			// Handle conversion error here
 			error_log("Error converting float config key '%s' in section '%s', check your values! Exception: %s", key.c_str(), sectionKey.c_str(), e.what());
 		}
@@ -56,11 +58,11 @@ float Config::GetFloat(std::string sectionKey, std::string key, float def, float
 bool Config::GetBool(std::string sectionKey, std::string key, bool def)
 {
 	bool val = def;
-	if (yaml[sectionKey][key]) {
+	if (jsonConfig.contains(sectionKey) && jsonConfig[sectionKey].contains(key)) {
 		try {
-			val = yaml[sectionKey][key].as<bool>();		
+			val = jsonConfig[sectionKey][key].template get<bool>();
 		} 
-		catch (const YAML::TypedBadConversion<bool>& e) {
+		catch (const std::exception& e) {
 			// Handle conversion error here
 			error_log("Error converting bool config key '%s' in section '%s', check your values! Exception: %s", key.c_str(), sectionKey.c_str(), e.what());
 		}
@@ -71,9 +73,10 @@ bool Config::GetBool(std::string sectionKey, std::string key, bool def)
 std::string Config::GetString(std::string sectionKey, std::string key, const std::string& def)
 {
 	std::string val = def;
-	if (yaml[sectionKey][key]) {
+	if (jsonConfig.contains(sectionKey) && jsonConfig[sectionKey].contains(key)) {
 		try {
-			val = yaml[sectionKey][key].as<std::string>();		
+			val = jsonConfig[sectionKey][key].template get<std::string>();
+
 		} catch (const std::exception& e) {
 			// Handle conversion error here
 			error_log("Error converting string config key '%s' in section '%s', check your values! Exception: %s", key.c_str(), sectionKey.c_str(), e.what());
@@ -84,88 +87,86 @@ std::string Config::GetString(std::string sectionKey, std::string key, const std
 
 void Config::SaveConfig()
 {
-	yaml = YAML::Node(YAML::NodeType::Map);
-
 	// Screen Tab
-	yaml["screen"] = YAML::Node(YAML::NodeType::Map);
-	YAML::Node yamlScreen = yaml["screen"];
-	yamlScreen["window_size_width"] = std::to_string(App.window.size.x);
-	yamlScreen["window_size_height"] = std::to_string(App.window.size.y);
-	yamlScreen["window_centered"] = App.window.centered;
-	yamlScreen["window_position_x"] = std::to_string(App.window.position.x);
-	yamlScreen["window_position_y"] = std::to_string(App.window.position.y);
-	yamlScreen["unlock_cursor"] = App.cursor.unlock;
-	yamlScreen["window_fullscreen"] = App.window.fullscreen;
-	yamlScreen["window_vsync"] = App.vsync;
-	yamlScreen["foreground_fps_active"] = App.foreground_fps.active;
-	yamlScreen["foreground_fps_value"] = std::to_string(App.foreground_fps.range.value);
-	yamlScreen["background_fps_active"] = App.background_fps.active;
-	yamlScreen["background_fps_value"] = std::to_string(App.background_fps.range.value);
-	yamlScreen["auto_minimize"] = App.window.auto_minimize;
-	yamlScreen["window_dark_mode"] = App.window.dark_mode;
+	json jsonScreen;
+	jsonScreen["window_size_width"] = App.window.size.x;
+	jsonScreen["window_size_height"] = App.window.size.y;
+	jsonScreen["window_centered"] = App.window.centered;
+	jsonScreen["window_position_x"] = App.window.position.x;
+	jsonScreen["window_position_y"] = App.window.position.y;
+	jsonScreen["unlock_cursor"] = App.cursor.unlock;
+	jsonScreen["window_fullscreen"] = App.window.fullscreen;
+	jsonScreen["window_vsync"] = App.vsync;
+	jsonScreen["foreground_fps_active"] = App.foreground_fps.active;
+	jsonScreen["foreground_fps_value"] = App.foreground_fps.range.value;
+	jsonScreen["background_fps_active"] = App.background_fps.active;
+	jsonScreen["background_fps_value"] = App.background_fps.range.value;
+	jsonScreen["auto_minimize"] = App.window.auto_minimize;
+	jsonScreen["window_dark_mode"] = App.window.dark_mode;
+	jsonConfig["screen"] = jsonScreen;
 
 	// Graphics Tab
-	yaml["graphics"] = YAML::Node(YAML::NodeType::Map);
-	YAML::Node yamlGraphics = yaml["graphics"];
-	yamlGraphics["shader_preset"] = App.shader.preset;
-	yamlGraphics["sharpen"] = App.sharpen.active;
-	yamlGraphics["sharpen_strength"] = std::to_string(App.sharpen.strength.value);
-	yamlGraphics["sharpen_clamp"] = std::to_string(App.sharpen.clamp.value);
-	yamlGraphics["sharpen_radius"] = std::to_string(App.sharpen.radius.value);
-	yamlGraphics["fxaa"] = App.fxaa.active;
-	yamlGraphics["fxaa_preset"] = std::to_string(App.fxaa.presets.selected);
-	yamlGraphics["lut"] = std::to_string(App.lut.selected);
-	yamlGraphics["bloom"] = App.bloom.active;
-	yamlGraphics["bloom_exposure"] = std::to_string(App.bloom.exposure.value);
-	yamlGraphics["bloom_gamma"] = std::to_string(App.bloom.gamma.value);
-	yamlGraphics["stretched_horizontal"] = App.viewport.stretched.x;
-	yamlGraphics["stretched_vertical"] = App.viewport.stretched.y;
+	json jsonGraphics;
+	jsonGraphics["shader_preset"] = App.shader.preset;
+	jsonGraphics["sharpen"] = App.sharpen.active;
+	jsonGraphics["sharpen_strength"] = App.sharpen.strength.value;
+	jsonGraphics["sharpen_clamp"] = App.sharpen.clamp.value;
+	jsonGraphics["sharpen_radius"] = App.sharpen.radius.value;
+	jsonGraphics["fxaa"] = App.fxaa.active;
+	jsonGraphics["fxaa_preset"] = App.fxaa.presets.selected;
+	jsonGraphics["lut"] = App.lut.selected;
+	jsonGraphics["bloom"] = App.bloom.active;
+	jsonGraphics["bloom_exposure"] = App.bloom.exposure.value;
+	jsonGraphics["bloom_gamma"] = App.bloom.gamma.value;
+	jsonGraphics["stretched_horizontal"] = App.viewport.stretched.x;
+	jsonGraphics["stretched_vertical"] = App.viewport.stretched.y;
+	jsonConfig["graphics"] = jsonGraphics;
 
 	// Features Tab
-	yaml["features"] = YAML::Node(YAML::NodeType::Map);
-	YAML::Node yamlFeatures = yaml["features"];
-	yamlFeatures["hd_cursor"] = App.hd_cursor;
-	yamlFeatures["hd_text"] = App.hd_text.active;
-	yamlFeatures["hd_text_scale"] = std::to_string(App.hd_text.scale.value);
-	yamlFeatures["mini_map"] = App.mini_map.active;
-	yamlFeatures["mini_map_text_over"] = App.mini_map.text_over;
-	yamlFeatures["mini_map_width"] = std::to_string(App.mini_map.width.value);
-	yamlFeatures["mini_map_height"] = std::to_string(App.mini_map.height.value);
-	yamlFeatures["motion_prediction"] = App.motion_prediction;
-	yamlFeatures["skip_intro"] = App.skip_intro;
-	yamlFeatures["no_pickup"] = App.no_pickup;
-	yamlFeatures["show_item_quantity"] = App.show_item_quantity;
-	yamlFeatures["show_fps"] = App.show_fps;
-	// yamlFeatures["hd_orbs"] = App.hd_orbs.active;
-	// yamlFeatures["hd_orbs_centered"] = App.hd_orbs.centered;
+	json jsonFeatures;
+	jsonFeatures["hd_cursor"] = App.hd_cursor;
+	jsonFeatures["hd_text"] = App.hd_text.active;
+	jsonFeatures["hd_text_scale"] = App.hd_text.scale.value;
+	jsonFeatures["mini_map"] = App.mini_map.active;
+	jsonFeatures["mini_map_text_over"] = App.mini_map.text_over;
+	jsonFeatures["mini_map_width"] = App.mini_map.width.value;
+	jsonFeatures["mini_map_height"] = App.mini_map.height.value;
+	jsonFeatures["motion_prediction"] = App.motion_prediction;
+	jsonFeatures["skip_intro"] = App.skip_intro;
+	jsonFeatures["no_pickup"] = App.no_pickup;
+	jsonFeatures["show_item_quantity"] = App.show_item_quantity;
+	jsonFeatures["show_fps"] = App.show_fps;
+	// jsonFeatures["hd_orbs"] = App.hd_orbs.active;
+	// jsonFeatures["hd_orbs_centered"] = App.hd_orbs.centered;
+	jsonConfig["features"] = jsonFeatures;
 
 	// Other
-	yaml["other"] = YAML::Node(YAML::NodeType::Map);
-	YAML::Node yamlOther = yaml["other"];
-	yamlOther["gl_ver_major"] = std::to_string((int)App.gl_ver.x);
-	yamlOther["gl_ver_minor"] = std::to_string((int)App.gl_ver.y);
-	yamlOther["use_compute_shader"] = App.use_compute_shader;
-	yamlOther["frame_latency"] = std::to_string(App.frame_latency);
-	yamlOther["load_dlls_early"] = App.dlls_early;
-	yamlOther["load_dlls_late"] = App.dlls_late;
+	json jsonOther;
+	jsonOther["gl_ver_major"] = (int)App.gl_ver.x;
+	jsonOther["gl_ver_minor"] = (int)App.gl_ver.y;
+	jsonOther["use_compute_shader"] = App.use_compute_shader;
+	jsonOther["frame_latency"] = App.frame_latency;
+	jsonOther["load_dlls_early"] = App.dlls_early;
+	jsonOther["load_dlls_late"] = App.dlls_late;
+	jsonConfig["other"] = jsonOther;
 
 	std::ofstream fout;
-	fout.open(App.yaml_file, std::ofstream::out | std::ofstream::trunc);
-	fout << yaml;
-
+	fout.open(App.json_file, std::ofstream::out | std::ofstream::trunc);
+	fout << std::setw(4) << jsonConfig << std::endl;
 	fout.close();
 }
 
 void Config::LoadConfig()
 {
 	bool bCreateFile = false;
-	std::ifstream ifile(App.yaml_file);
+	std::ifstream ifile(App.json_file);
 	if (!ifile) {
-		std::ofstream output(App.yaml_file);
+		std::ofstream output(App.json_file);
+		output << "{}";
 		bCreateFile = true;
 	}
 
-	yaml = YAML::LoadFile(App.yaml_file);
+	jsonConfig = json::parse(std::ifstream{ App.json_file });
 
 	// Setup Color Grading profiles
 	App.lut.items.push_back({ "Game Default" });

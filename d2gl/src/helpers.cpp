@@ -19,6 +19,7 @@
 #include "pch.h"
 #include "helpers.h"
 #include "d2/common.h"
+#include <sstream>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb/stb_image.h"
