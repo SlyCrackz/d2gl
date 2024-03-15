@@ -800,7 +800,7 @@ void HDText::drawEntryText()
 	const auto old_size = m_text_size;
 	setTextSize(18);
 	const auto level_name = d2::getLevelName(*d2::level_no);
-	const std::set<int> exclusions = { 
+	int exclusions[10] = { 
 		38,	                       // Tristram
 		109,                       // Harrogath
 		121,                       // Nihlathak's Temple
@@ -810,9 +810,14 @@ void HDText::drawEntryText()
 
 	// Skip adding "The" if it already exists or doesn't make grammatical sense
 	if (wcsncmp(level_name, L"The ", 4) != 0) {
-		if (exclusions.find(*d2::level_no) == exclusions.end()) {
-			entry_text += L"The ";
+		bool excluded = false;
+		for (int n = 0; n < sizeof(exclusions) / sizeof(exclusions[0]); n++) {
+			if (exclusions[n] == *d2::level_no) {
+				excluded = true;
+				break;
+			}
 		}
+		if (!excluded) { entry_text += L"The "; }
 	}
 	entry_text += level_name;
 	const auto text_width = getNormalTextWidth(entry_text.c_str(), 0);
