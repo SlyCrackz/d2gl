@@ -800,11 +800,25 @@ void HDText::drawEntryText()
 	const auto old_size = m_text_size;
 	setTextSize(18);
 	const auto level_name = d2::getLevelName(*d2::level_no);
-	int exclusions[10] = { 
-		38,	                       // Tristram
-		109,                       // Harrogath
-		121,                       // Nihlathak's Temple
-		66, 67, 68, 69, 70, 71, 72 // Tal Rasha's Tombs
+	const int exclusions[25] = {
+		38,							// Tristram
+		40,							// Lut Gholein
+		66, 67, 68, 69, 70, 71, 72, // Tal Rasha's Tombs
+		73,							// Tal Rasha's Chamber
+		79, 81,						// Lower/Upper Kurast
+		83,							// Travincal
+		108,						// Chaos Sanctuary
+		109,						// Harrogath
+		121,						// Nihlathak's Temple
+		125,						// Abaddon
+		135,						// Old Uber Tristram
+		142,						// Horazon's Memory
+		149,						// Bastion Keep
+		169,						// Shadows of Westmarch
+		170,						// Royal Crypts
+		171,						// Sanctuary of Sin
+		176,						// Zhar's Sanctum
+		185,						// New Uber Tristram
 	};
 	std::wstring entry_text = L"Entering ";
 
