@@ -172,8 +172,8 @@ void initHooks()
 	sleep_fix.add(PatchType::Nop, getOffset((DLL_D2CLIENT, 0x6A0AFF15), (0x2635, 0x6A00FF15), (0x2684), (0x8BD14), (0x5D4A4), (0x6CFD4), (0x3CB94), (0x27724), (0x51C42)), 8);
 	sleep_fix.add(PatchType::Nop, getOffset((DLL_D2CLIENT, 0x6A00FFD3), (0x96C8, 0x55FFD783), (0x9E68, 0x53FFD783), (0x89288), (0x320B8), (0x7BD18), (0x43988), (0x44928), (0x4C711, 0x6A00FFD7)), isVerMax(V_110) ? 3 : 4);
 	sleep_fix.add(PatchType::Nop, getOffset((DLL_D2CLIENT, 0x6A00FFD3), (0x96EC, 0x55FFD783), (0x9E8C, 0x53FFD783), (0x892AD), (0x320DD), (0x7BD3D), (0x439AD), (0x4494D), (0x4C740, 0x6A00FFD7)), isVerMax(V_110) ? 3 : 4);
-	if (isVerMin(V_110) && isVerMax(V_113d))
-		sleep_fix.add(PatchType::Nop, getOffset((DLL_D2WIN), (), (0xD075, 0x50FF15C0), (0xC683, 0x50FF15A0), (0x13FA3, 0x50FF15A8), (0xD993, 0x50FF15A8), (0x18A5D, 0x50FF15C8), (0xEDB3, 0x50FF15B8), ()), 6); // Only 1.13c has been updated, the rest are still broken
+	//if (isVerMin(V_110) && isVerMax(V_113d)) // Moved into PD2 so it applies to ddraw users as well
+	//	sleep_fix.add(PatchType::Nop, getOffset((DLL_D2WIN), (), (0xD075, 0x50FF15C0), (0xC683, 0x50FF15A0), (0x13FA3, 0x50FF15A8), (0xD993, 0x50FF15A8), (0x18A5D, 0x50FF15C8), (0xEDB3, 0x50FF15B8), ()), 6); // Only 1.13c has been updated, the rest are still broken
 	sleep_fix.toggle(true);
 
 	Patch automap_loop = Patch();

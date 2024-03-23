@@ -85,6 +85,8 @@ std::string Config::GetString(std::string sectionKey, std::string key, const std
 	return val;
 }
 
+bool bCreateFile = false;
+
 void Config::SaveConfig()
 {
 	// Screen Tab
@@ -154,19 +156,65 @@ void Config::SaveConfig()
 	fout.open(App.json_file, std::ofstream::out | std::ofstream::trunc);
 	fout << std::setw(4) << jsonConfig << std::endl;
 	fout.close();
+
+	if (bCreateFile)
+	{
+		std::ofstream foutBak(App.json_backup);
+		foutBak << std::setw(4) << jsonConfig << std::endl;
+		foutBak.close();
+	}
 }
 
 void Config::LoadConfig()
 {
-	bool bCreateFile = false;
 	std::ifstream ifile(App.json_file);
 	if (!ifile) {
 		std::ofstream output(App.json_file);
 		output << "{}";
+		output.close();
 		bCreateFile = true;
 	}
+	std::ifstream ibakfile(App.json_backup);
+	if (!ibakfile) {
+		std::ofstream outputBak(App.json_backup);
+		outputBak << "{}";
+		outputBak.close();
+	}
 
-	jsonConfig = json::parse(std::ifstream{ App.json_file });
+	try
+	{
+		jsonConfig = json::parse(std::ifstream{ App.json_file });
+
+		if (!bCreateFile)
+		{
+			std::ofstream foutBak(App.json_backup);
+			foutBak << std::setw(4) << jsonConfig << std::endl;
+			foutBak.close();
+		}
+	}
+	catch (const json::parse_error&)
+	{
+		try
+		{
+			jsonConfig = json::parse(std::ifstream{ App.json_backup });
+
+			std::ofstream fout(App.json_file);
+			fout << std::setw(4) << jsonConfig << std::endl;
+			fout.close();
+		}
+		catch (const json::parse_error&)
+		{
+			std::ofstream output(App.json_file);
+			output << "{}";
+			output.close();
+			std::ofstream outputBak(App.json_backup);
+			outputBak << "{}";
+			outputBak.close();
+			bCreateFile = true;
+
+			jsonConfig = json::parse(std::ifstream{ App.json_file });
+		}
+	}
 
 	// Setup Color Grading profiles
 	App.lut.items.push_back({ "Game Default" });

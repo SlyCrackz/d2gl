@@ -44,6 +44,7 @@ struct D2GLApp {
 	std::string version_str = "1.3.3";
 	std::string ini_file = "d2gl.ini";
 	std::string json_file = "d2gl.json";
+	std::string json_backup = "d2gl.json.bak";
 	std::string mpq_file = "d2gl.mpq";
 	std::string log_file = "d2gl.log";
 
