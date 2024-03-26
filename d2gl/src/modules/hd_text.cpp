@@ -222,7 +222,7 @@ bool HDText::drawText(const wchar_t* str, int x, int y, uint32_t color, uint32_t
 			m_map_names = true;
 			return false;
 		} else if (m_text_size != 6) {
-			if (*d2::screen_shift != SCREENPANEL_NONE)
+			if (*d2::screen_shift != SCREENPANEL_NONE || *d2::help_menu_open)
 				return true;
 
 			map_text = true;
