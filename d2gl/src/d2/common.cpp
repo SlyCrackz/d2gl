@@ -114,6 +114,7 @@ getUnitStat_t getUnitStat_Fn = (getUnitStat_t)getProc((DLL_D2COMMON), (-10519), 
 getUnitState_t getUnitState_Fn = (getUnitState_t)getProc((DLL_D2COMMON), (-10487), (), (), (-10604), (), (-10494), (-10706), (0x239DF0));
 getUnitRoom_t getUnitRoom = (getUnitRoom_t)getProc((DLL_D2COMMON), (), (), (), (), (), (), (-10846), ());
 getLevelNoByRoom_t getLevelNoByRoom = (getLevelNoByRoom_t)getProc((DLL_D2COMMON), (), (), (), (), (), (), (-10691), ());
+checkIfThrowable_t checkIfThrowable = (checkIfThrowable_t)getProc((DLL_D2COMMON), (), (), (), (), (), (-10711), (), ());
 uintptr_t getLevelName_Fn = getProc((DLL_D2CLIENT), (0x88420), (0x839F0), (0x9DC10), (0x61AA0), (0x8B1A0), (0xBE240), (0x18250), (0x53E70));
 
 // d2client + 0x291F8 : 1 2 3 4 (potion keys)
