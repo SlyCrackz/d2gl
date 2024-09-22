@@ -153,9 +153,9 @@ inline std::vector<D2TextInfo> g_options_texts = {
 	{ 0, { 184, 26 }, L"AUDIO ONLY", TextAlign::Right }, // audioonly.dc6
 	{ 0, { 169, 26 }, L"TEXT ONLY", TextAlign::Right }, // textonly.dc6
 	{ 1, {  39, 36 }, L"VIDEO OPTIONS" }, // videooptions.dc6
-	{ 0, { 175, 26 }, L"RESOLUTION", TextAlign::Left }, // resolution.dc6
-	{ 0, { 135, 26 }, L"800x600", TextAlign::Right }, // 800x600.dc6
-	{ 0, { 123, 26 }, L"640x480", TextAlign::Right }, // 640x480.dc6
+	//{ 0, { 175, 26 }, L"RESOLUTION", TextAlign::Left }, // resolution.dc6
+	//{ 0, { 135, 26 }, L"800x600", TextAlign::Right }, // 800x600.dc6
+	//{ 0, { 123, 26 }, L"640x480", TextAlign::Right }, // 640x480.dc6
 	{ 1, {   9, 26 }, L"LIGHTING QUALITY", TextAlign::Left }, // lightquality.dc6
 	{ 0, {  57, 26 }, L"HIGH", TextAlign::Right }, // high.dc6
 	{ 0, { 108, 26 }, L"MEDIUM", TextAlign::Right }, // medium.dc6
@@ -176,6 +176,45 @@ inline std::vector<D2TextInfo> g_options_texts = {
 	{ 0, { 194, 26 }, L"SHOW PARTY", TextAlign::Left }, // automapparty.dc6
 	{ 0, { 190, 26 }, L"SHOW NAMES", TextAlign::Left }, // automappartynames.dc6
 	{ 1, { 167, 36 }, L"CONFIGURE CONTROLS" }, // cfgoptions.dc6
+	{ 0, { 246, 36 }, L"PD2 OPTIONS" }, // PD2Options.dc6
+	{ 0, { 163, 36 }, L"GENERAL" }, // GeneralOpt.dc6
+	{ 0, { 135, 36 }, L"AURAS" }, // AuraOptions.dc6
+	{ 0, { 237, 36 }, L"QUICK CAST" }, // QuickCastOptions.dc6
+	{ 0, { 247, 36 }, L"LOOT FILTER" }, // LootFilter.dc6
+	{ 0, { 87, 36 }, L"D2GL" }, // D2GL.dc6
+	{ 0, { 81, 36 }, L"HELP" }, // HelpOpt.dc6
+	{ 0, { 181, 26 }, L"BUFF TIMERS", TextAlign::Left }, // BuffTimers.dc6
+	{ 0, { 162, 26 }, L"Menu Music" }, // MenuMusic.dc6
+	{ 0, { 175, 26 }, L"QUICK CAST", TextAlign::Left }, // QuickCast.dc6
+	{ 0, { 138, 26 }, L"SKILL BAR", TextAlign::Left }, // SkillBar.dc6
+	{ 0, { 182, 26 }, L"SCREENSHAKE", TextAlign::Left }, // ScreenShake.dc6
+	{ 0, { 230, 26 }, L"MINI MAP (D2GL)", TextAlign::Right }, // MiniMapD2gl.dc6
+	{ 0, { 193, 26 }, L"BELT STATUS", TextAlign::Left }, // BeltStatus.dc6
+	{ 0, { 195, 26 }, L"DPS COUNTER", TextAlign::Left }, // DPSCounter.dc6
+	{ 0, { 205, 26 }, L"DCLONE AURA", TextAlign::Left }, // DcloneAura.dc6
+	{ 0, { 158, 26 }, L"DEV AURA", TextAlign::Left }, // DevAura.dc6
+	{ 0, { 129, 26 }, L"99 AURA", TextAlign::Left }, // LevelAura.dc6
+	{ 0, { 152, 26 }, L"PVP AURA", TextAlign::Left }, // PvpAura.dc6
+	{ 0, { 221, 26 }, L"RATHMA AURA", TextAlign::Left }, // RathmaAura.dc6
+	{ 1, { 31, 26 }, L"ADVANCED OPTIONS" }, // AdvOptions.dc6
+	{ 1, { 29, 26 }, L"MOTION PREDICTION" }, // MotionPre.dc6
+	{ 0, { 161, 26 }, L"HD CURSOR", TextAlign::Left }, // HDCursor.dc6
+	{ 0, { 127, 26 }, L"HD TEXT", TextAlign::Left }, // HDText.dc6
+	{ 1, { 78, 26 }, L"SHOW ITEM QUANTITY", TextAlign::Left }, // ItemQuant.dc6
+	{ 0, { 232, 26 }, L"AUTOMAP TYPE", TextAlign::Left }, // AutoMapType.dc6
+	{ 0, { 137, 26 }, L"D2GL MINI", TextAlign::Right }, // MapD2GL.dc6
+	{ 0, { 106, 26 }, L"CLASSIC", TextAlign::Right }, // MapClassic.dc6
+	{ 1, { 5, 26 }, L"ADVANCED STATS", TextAlign::Left }, // AdvStats.dc6
+	{ 1, { 8, 26 }, L"EXPERIENCE METER", TextAlign::Left }, // ExpMeter.dc6
+	{ 0, { 64, 26 }, L"LEFT", TextAlign::Right }, // OptLeft.dc6
+	{ 0, { 79, 26 }, L"RIGHT", TextAlign::Right }, // OptRight.dc6
+	{ 1, { 42, 26 }, L"ENABLE LOOT FILTER", TextAlign::Left }, // EnableFilter.dc6
+	{ 1, { 62, 26 }, L"ALWAYS SHOW ITEMS", TextAlign::Left }, // ShowItems.dc6
+	{ 1, { 40, 26 }, L"SHOW STAT RANGES", TextAlign::Left }, // ShowStatRange.dc6
+	{ 1, { 6, 26 }, L"SHOW ITEM LEVEL", TextAlign::Left }, // ShowItemLevel.dc6
+	{ 1, { 47, 26 }, L"CHAT NOTIFICATIONS", TextAlign::Left }, // LootNotify.dc6
+	{ 0, { 82, 26 }, L"LEVEL", TextAlign::Left }, // FilterLevel.dc6
+
 };
 inline std::map<uint32_t, std::vector<D2TextInfo>> g_options_text_others = {
 	{ LANG_ESP, {
