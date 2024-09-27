@@ -24,7 +24,7 @@ namespace d2gl {
 
 Font::Font(GlyphSet* glyph_set, const FontCreateInfo& font_ci)
 	: m_glyph_set(glyph_set), m_name(font_ci.name), m_size(font_ci.size), m_weight(font_ci.weight), m_letter_spacing(font_ci.letter_spacing), m_line_height(font_ci.line_height),
-	  m_shadow_intensity(font_ci.shadow_intensity), m_offset(font_ci.offset), m_symbol_offset(font_ci.symbol_offset), m_color(font_ci.color), m_bordered(font_ci.bordered)
+	m_shadow_intensity(font_ci.shadow_intensity), m_offset(font_ci.offset), m_symbol_offset(font_ci.symbol_offset), m_color(font_ci.color), m_bordered(font_ci.bordered)
 {
 	setSize();
 	m_object = std::make_unique<Object>();
@@ -109,11 +109,22 @@ void Font::drawText(const wchar_t* str, glm::vec2 pos, uint32_t color, bool fram
 
 	int char_num = 0;
 	int line_num = 0;
+	int trans_mask = 0x00000000;
 	while (str[char_num] != L'\0') {
 		if (str[char_num] == L'ÿ' && str[char_num + 1] == L'c') {
 			const auto color_code = str[char_num + 2];
 			if (g_text_colors.find(color_code) != g_text_colors.end()) {
-				char_color = g_text_colors.at(color_code);
+				if (color_code == L'\x40' || color_code == L'\x41' || color_code == L'\x42' || color_code == L'\x43') {
+					trans_mask = g_text_colors.at(color_code);
+					char_color &= 0xFFFFFF00;
+					char_color |= trans_mask;
+				} else {
+					char_color = g_text_colors.at(color_code);
+					if (trans_mask) {
+						char_color &= 0xFFFFFF00;
+						char_color |= trans_mask;
+					}
+				}
 				char_num += 3;
 				continue;
 			}

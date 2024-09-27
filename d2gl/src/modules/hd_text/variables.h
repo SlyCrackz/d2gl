@@ -62,6 +62,7 @@ inline const std::map<wchar_t, uint32_t> g_text_colors = {
 	{ L'\x32', 0x25FE00FF }, { L'\x33', 0x7B7BFEFF }, { L'\x34', 0xDFB679FF }, { L'\x35', 0x7B7B7BFF },
 	{ L'\x36', 0x00000000 }, { L'\x37', 0xD9CD8EFF }, { L'\x38', 0xFFB200FF }, { L'\x39', 0xEBEB75FF },
 	{ L'\x3A', 0x008C00FF }, { L'\x3B', 0xB700FFFF }, { L'\x3C', 0x00D200FF }, { L'\x3D', 0xEBEBEBFF },
+	{ L'\x40', 0x000000FF }, { L'\x41', 0x00000099 }, { L'\x42', 0x00000066 }, { L'\x43', 0x00000033 }, // special cases, apply transparency to rest of the text
 };
 
 inline const std::array<wchar_t, 18> g_default_colors = {
@@ -85,7 +86,7 @@ inline const std::array<wchar_t, 18> g_default_colors = {
 	L'\x04', // 17.Red (Death texts) //Custom
 };
 
-inline const std::map<uint32_t, wchar_t> g_initial_colors {
+inline const std::map<uint32_t, wchar_t> g_initial_colors{
 	{ 2, L'\x01' }, {  3, L'\x01' }, { 7, L'\x01' },
 	{ 9, L'\x02' }, { 10, L'\x02' },
 };
