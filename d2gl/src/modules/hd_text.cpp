@@ -286,6 +286,8 @@ bool HDText::drawText(const wchar_t* str, int x, int y, uint32_t color, uint32_t
 
 bool HDText::drawFramedText(const wchar_t* str, int x, int y, uint32_t color, uint32_t centered)
 {
+	App.tooltip.active = false;
+
 	if (!str || !isActive())
 		return false;
 
@@ -383,6 +385,21 @@ bool HDText::drawFramedText(const wchar_t* str, int x, int y, uint32_t color, ui
 	m_object_bg->setColor(m_bg_color, 1);
 	m_object_bg->setExtra(box_size);
 	App.context->pushObject(m_object_bg);
+
+	// Save size and position of tooltip to be used for screenshots
+	App.tooltip.active = true;
+	float scale_x = (float)(App.viewport.stretched.x ? App.window.size.x : App.viewport.size.x) / (float)App.game.size.x;
+	float scale_y = (float)(App.viewport.stretched.y ? App.window.size.y : App.viewport.size.y) / (float)App.game.size.y;
+	App.tooltip.pos.x = (int)(scale_x * pos.x);
+	App.tooltip.pos.y = (int)(scale_y * pos.y);
+	App.tooltip.size.x = (int)(scale_x * box_size.x);
+	App.tooltip.size.y = (int)(scale_y * box_size.y);
+
+	if (!App.viewport.stretched.x)
+		App.tooltip.pos.x += App.viewport.offset.x;
+	if (!App.viewport.stretched.y)
+		App.tooltip.pos.y += App.viewport.offset.y;
+
 
 	pos.y += font_size;
 	font->setShadow(0);
