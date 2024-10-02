@@ -169,6 +169,12 @@ struct D2GLApp {
 		Range<int> height = { 140, 100, 200 };
 	} mini_map;
 
+	struct {
+		bool active = false;
+		glm::vec2 pos = { 0, 0 };
+		glm::vec2 size = { 0, 0 };
+	} tooltip;
+
 #ifdef _DEBUG
 	int var[10] = { 0 };
 #endif

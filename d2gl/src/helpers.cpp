@@ -432,6 +432,25 @@ std::string saveScreenShot(uint8_t* data, int width, int height)
 	return file_name;
 }
 
+void copyTooltipScreenShot()
+{
+	HDC hScreen = GetDC(App.hwnd);
+	HDC hDC = CreateCompatibleDC(hScreen);
+	HBITMAP hBitmap = CreateCompatibleBitmap(hScreen, App.tooltip.size.x, App.tooltip.size.y);
+	HGDIOBJ old_obj = SelectObject(hDC, hBitmap);
+	BOOL bRet = BitBlt(hDC, 0, 0, App.tooltip.size.x, App.tooltip.size.y, hScreen, App.tooltip.pos.x, App.tooltip.pos.y, SRCCOPY);
+
+	OpenClipboard(NULL);
+	EmptyClipboard();
+	SetClipboardData(CF_BITMAP, hBitmap);
+	CloseClipboard();
+
+	SelectObject(hDC, old_obj);
+	DeleteDC(hDC);
+	ReleaseDC(NULL, hScreen);
+	DeleteObject(hBitmap);
+}
+
 void loadDlls(const std::string& dlls, bool late)
 {
 	trace_log("Loading %s DLLs.", late ? "late" : "early");

@@ -96,6 +96,12 @@ __declspec(dllexport) void __cdecl d2glToggleInterface()
 		d2gl::win32::setCursorLock();
 }
 
+__declspec(dllexport) void __cdecl d2glCopyTooltipScreenShot()
+{
+	if (d2gl::App.tooltip.active)
+		d2gl::helpers::copyTooltipScreenShot();
+}
+
 #ifdef __cplusplus
 }
 #endif
