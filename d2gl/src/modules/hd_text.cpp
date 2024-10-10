@@ -1029,7 +1029,7 @@ inline wchar_t HDText::getColor(uint32_t color)
 
 void HDText::drawFpsCounter()
 {
-	if (!App.show_fps || App.game.screen != GameScreen::InGame)
+	if (!App.show_fps || App.game.screen != GameScreen::InGame || *d2::help_menu_open)
 		return;
 
 	static wchar_t str[20] = { 0 };
