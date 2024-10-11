@@ -161,6 +161,11 @@ bool HDText::drawText(const wchar_t* str, int x, int y, uint32_t color, uint32_t
 	if (!isActive() || !str)
 		return false;
 
+	// Hide name and "Gold" behind gold transaction popup in trade window
+	if (d2::getGoldDialog() && (x > 229 && x < 405) && y == 302) {
+		return false;
+	}
+
 	auto font = getFont(m_text_size);
 	font->setShadow(1);
 
@@ -1083,7 +1088,16 @@ void HDText::drawItemQuantity(bool draw, int x, int y)
 				bg->setExtra({ 0.4f, 0.6f });
 				App.context->pushObject(bg);
 			}
-			d2::drawNormalTextHooked(str, item_pos.x + 3, item_pos.y - 4, 0, 0);
+
+			// Hide quantity behind gold transaction popup
+			d2::NPCDialog* gold_dialog = d2::getGoldDialog();
+			if (gold_dialog &&
+				(x >= gold_dialog->nXStart && x <= gold_dialog->nXStart + gold_dialog->nXWidth) &&
+				(y >= gold_dialog->nYStart && y <= gold_dialog->nYStart + gold_dialog->nYHeight + 8)) {
+
+			} else {
+				d2::drawNormalTextHooked(str, item_pos.x + 3, item_pos.y - 4, 0, 0);
+			}
 			d2::setTextSizeHooked(old_size);
 		}
 	}

@@ -56,6 +56,11 @@ bool isEscMenuOpen()
 	return *esc_menu_open || control;
 }
 
+NPCDialog* getGoldDialog()
+{
+	return (NPCDialog*)*(uintptr_t*)gold_dialog;
+}
+
 bool isLangCJK(uint32_t lang_id)
 {
 	return lang_id == LANG_JPN || lang_id == LANG_KOR || lang_id == LANG_CHI;
@@ -228,7 +233,7 @@ void __stdcall drawImageHooked(CellContext* cell, int x, int y, uint32_t gamma, 
 		drawImage(cell, pos.x, pos.y, gamma, draw_mode, palette);
 	}
 
-	modules::HDText::drawItemQuantity(true);
+	modules::HDText::drawItemQuantity(true, x, y);
 }
 
 void __stdcall drawPerspectiveImageHooked(CellContext* cell, int x, int y, uint32_t gamma, int draw_mode, int screen_mode, uint8_t* palette)
