@@ -215,6 +215,7 @@ inline std::vector<D2TextInfo> g_options_texts = {
 	{ 1, { 6, 26 }, L"SHOW ITEM LEVEL", TextAlign::Left }, // ShowItemLevel.dc6
 	{ 1, { 47, 26 }, L"CHAT NOTIFICATIONS", TextAlign::Left }, // LootNotify.dc6
 	{ 0, { 82, 26 }, L"LEVEL", TextAlign::Left }, // FilterLevel.dc6
+	{ 0, { 163, 26 }, L"???? AURA", TextAlign::Left }, // TempAura.dc6
 
 };
 inline std::map<uint32_t, std::vector<D2TextInfo>> g_options_text_others = {
