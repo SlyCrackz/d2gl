@@ -418,6 +418,10 @@ bool HDText::drawFramedText(const wchar_t* str, int x, int y, uint32_t color, ui
 
 bool HDText::drawRectangledText(const wchar_t* str, int x, int y, uint32_t rect_transparency, uint32_t color)
 {
+	// Dont draw over the health globe
+	if (x < 120 && y > 494)
+		return true;
+
 	if (!isActive() || !str)
 		return false;
 
@@ -449,6 +453,10 @@ bool HDText::drawRectangledText(const wchar_t* str, int x, int y, uint32_t rect_
 		size = font->getTextSize(str);
 		line_count = font->getLineCount();
 		font_size = font->getFontSize();
+
+		// Dont draw over the mana globe
+		if (x + size.x > 957 && y > 494)
+			return true;
 
 		padding = { 3.4f, glm::max(1.4f, (18.0f - font_size) / 2.0f) };
 		back_pos = { (float)x + 5.0f, (float)y - size.y };
