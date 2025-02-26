@@ -395,8 +395,8 @@ void Menu::draw()
 			drawSeparator();
 			drawCheckbox_m("No Pickup", App.no_pickup, "Auto /nopickup option on launch (exclude 1.09d).", no_pickup);
 			drawSeparator();
-			//drawCheckbox_m("Show Monster Resistances", App.show_monster_res, "Show monster resistances on hp bar.", show_monster_res);
-			//drawSeparator();
+			drawCheckbox_m("Show Monster Resistances", App.show_monster_res, "Show monster resistances on hp bar.", show_monster_res);
+			drawSeparator();
 			drawCheckbox_m("Show Item Quantity", App.show_item_quantity, "Show item quantity on bottom left corner of icon.", show_item_quantity);
 			drawSeparator();
 			drawCheckbox_m("Show FPS", App.show_fps, "FPS Counter on bottom center.", show_fps);

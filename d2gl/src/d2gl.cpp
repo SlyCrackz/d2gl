@@ -37,7 +37,7 @@ __declspec(dllexport) BOOL __stdcall d2glConfigQueryImpl(D2GLConfigId config_id)
 		case D2GL_CONFIG_MOTION_PREDICTION: return d2gl::App.motion_prediction;
 		case D2GL_CONFIG_MINI_MAP: return d2gl::App.mini_map.active;
 		case D2GL_CONFIG_SHOW_ITEM_QUANTITY: return d2gl::App.show_item_quantity;
-		case D2GL_CONFIG_SHOW_MONSTER_RES: return FALSE;
+		case D2GL_CONFIG_SHOW_MONSTER_RES: return d2gl::App.show_monster_res;
 		case D2GL_CONFIG_SHOW_FPS: return d2gl::App.show_fps;
 	}
 	return FALSE;

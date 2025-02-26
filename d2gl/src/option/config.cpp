@@ -137,6 +137,7 @@ void Config::SaveConfig()
 	jsonFeatures["skip_intro"] = App.skip_intro;
 	jsonFeatures["no_pickup"] = App.no_pickup;
 	jsonFeatures["show_item_quantity"] = App.show_item_quantity;
+	jsonFeatures["show_monster_res"] = App.show_monster_res; 
 	jsonFeatures["show_fps"] = App.show_fps;
 	// jsonFeatures["hd_orbs"] = App.hd_orbs.active;
 	// jsonFeatures["hd_orbs_centered"] = App.hd_orbs.centered;
@@ -283,6 +284,7 @@ void Config::LoadConfig()
 	App.skip_intro = d2gl::Config::GetBool("features", "skip_intro", App.skip_intro);
 	App.no_pickup = d2gl::Config::GetBool("features", "no_pickup", App.no_pickup);
 	App.show_item_quantity = d2gl::Config::GetBool("features", "show_item_quantity", App.show_item_quantity);
+	App.show_monster_res = d2gl::Config::GetBool("features", "show_monster_res", App.show_monster_res);
 	App.show_fps = d2gl::Config::GetBool("features", "show_fps", App.show_fps);
 
 	// Other
