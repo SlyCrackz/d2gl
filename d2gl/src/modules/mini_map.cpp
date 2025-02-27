@@ -68,7 +68,10 @@ void MiniMap::draw()
 		if (App.hd_text.active && !*d2::help_menu_open) {
 			time_t now = time(0);
 			localtime_s(&gmt_time, &now);
-			swprintf_s(time_str, L" | ÿc\x34%.2d:%.2d", gmt_time.tm_hour, gmt_time.tm_min);
+			int hour = gmt_time.tm_hour % 12;
+			if (hour == 0)
+				hour = 12;
+			swprintf_s(time_str, L" | ÿc\x34%.2d:%.2d %s", hour, gmt_time.tm_min, (gmt_time.tm_hour >= 12) ? L"PM" : L"AM");
 
 			const auto old_size = modules::HDText::Instance().getTextSize();
 			d2::setTextSizeHooked(19);
