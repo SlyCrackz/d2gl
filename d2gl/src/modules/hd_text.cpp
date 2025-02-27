@@ -907,9 +907,9 @@ void HDText::drawMonsterHealthBar(d2::UnitAny* unit)
 		const auto len = wcslen(name_str);
 		if (len <= 0)
 			return;
-
 		auto end = name_str + len - 1;
-		while (end >= name_str && *end == L' ') end--;
+		while (end >= name_str && *end == L' ')
+			end--;
 		*(end + 1) = '\0';
 		name = name_str;
 	}
@@ -929,12 +929,13 @@ void HDText::drawMonsterHealthBar(d2::UnitAny* unit)
 	else if (*d2::screen_shift == SCREENPANEL_LEFT)
 		center = (float)(*d2::screen_width / 4 * 3);
 
-	const auto text_size = font->getTextSize(name);
+	// Compute monster name size.
+	const auto nameSize = font->getTextSize(name);
 	float hp_percent = (float)hp / (float)max_hp;
 
 	glm::vec2 bar_size = { 160.0f, 18.0f };
-	if (text_size.x + 40.0f > bar_size.x)
-		bar_size.x = text_size.x + 40.0f;
+	if (nameSize.x + 40.0f > bar_size.x)
+		bar_size.x = nameSize.x + 40.0f;
 
 	glm::vec2 bar_pos = { center - bar_size.x / 2, d2::isLangCJK(m_lang_id) ? 18.0f : 20.0f };
 
@@ -951,6 +952,7 @@ void HDText::drawMonsterHealthBar(d2::UnitAny* unit)
 		App.context->pushObject(m_object_bg);
 	}
 
+	// Determine text color based on monster type and hovered unit color.
 	wchar_t text_color = L'\x30';
 	if (type == d2::MonsterType::Boss || type == d2::MonsterType::SuperUnique)
 		text_color = L'\x34';
@@ -961,8 +963,25 @@ void HDText::drawMonsterHealthBar(d2::UnitAny* unit)
 	if (hp == 0)
 		text_color = L'\x31';
 
-	glm::vec2 text_pos = { center - text_size.x / 2, bar_pos.y + 15.8f };
-	font->drawText(name, text_pos, g_text_colors.at(text_color));
+	// Prepare to draw monster name along with HP percent.
+	// Compute the HP percentage as an integer.
+	int percentInt = (int)round(hp_percent * 100.0f);
+	wchar_t percentStr[8];
+	swprintf_s(percentStr, L" %d%%", percentInt);
+
+	// Get size of the percent string.
+	auto percentSize = font->getTextSize(percentStr);
+	// Combined width is the width of the name plus the percent string.
+	float combinedWidth = nameSize.x + percentSize.x;
+	// Center the combined text.
+	glm::vec2 combinedPos = { center - combinedWidth / 2, bar_pos.y + 15.8f };
+
+	// Draw monster name.
+	font->drawText(name, combinedPos, g_text_colors.at(text_color));
+	// Draw percent string immediately to the right.
+	glm::vec2 percentPos = { combinedPos.x + nameSize.x, combinedPos.y };
+	font->drawText(percentStr, percentPos, g_text_colors.at(text_color));
+
 	m_hovered_unit.color = 0;
 
 	if (App.show_monster_res) {
@@ -980,16 +999,18 @@ void HDText::drawMonsterHealthBar(d2::UnitAny* unit)
 		const wchar_t* i6 = s6 >= 100 ? L"⛦" : L"";
 
 		static wchar_t res_str[100];
-		swprintf_s(res_str, L"ÿc\x34%s%d ÿc\x03⌁ ÿc\x38%s%d ÿc\x03⌁ ÿc\x31%s%d ÿc\x03⌁ ÿc\x39%s%d ÿc\x03⌁ ÿc\x33%s%d ÿc\x03⌁ ÿc\x32%s%d", i1, s1, i2, s2, i3, s3, i4, s4, i5, s5, i6, s6);
+		swprintf_s(res_str, L"ÿc\x34%s%d ÿc\x03⌁ ÿc\x38%s%d ÿc\x03⌁ ÿc\x31%s%d ÿc\x03⌁ ÿc\x39%s%d ÿc\x03⌁ ÿc\x33%s%d ÿc\x03⌁ ÿc\x32%s%d",
+			i1, s1, i2, s2, i3, s3, i4, s4, i5, s5, i6, s6);
 
-		const auto font = getFont(20);
-		font->setShadow(1);
-		font->setMasking(false);
+		auto resFont = getFont(20);
+		resFont->setShadow(1);
+		resFont->setMasking(false);
 
-		const auto text_size = font->getTextSize(res_str);
-		font->drawText(res_str, { center - text_size.x / 2.0f, bar_pos.y - 3.0f }, g_text_colors.at(16));
+		const auto resSize = resFont->getTextSize(res_str);
+		resFont->drawText(res_str, { center - resSize.x / 2.0f, bar_pos.y - 3.0f }, g_text_colors.at(16));
 	}
 }
+
 
 void HDText::drawPlayerHealthBar(d2::UnitAny* unit)
 {
